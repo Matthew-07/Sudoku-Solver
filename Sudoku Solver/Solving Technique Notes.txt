@@ -1,0 +1,48 @@
+A summary of some ways to resolve the value of squares in a sudoku grid.
+
+A cell can be resolved once it is proven that it can contain only one value.
+
+These notes are to help me create an algorithm for solving sudokus. This algorithm should be able to solve any 
+sudoku that has exactly one correct solution but I don't care if it breaks when a sudoku has more than one solution.
+
+1. Start by assuming each cell could be any number, then rule out numbers that already appear 
+in the same box, row or column.
+
+2. If n boxes in the same box/row/column have the exact same n values they could be. They
+between them MUST contain those values. Hence no other cells in the same box/row/column can
+contain those values.
+
+3. Check which numbers are missing from a box/row/column. Then check which cells may be
+able to contain these numbers. This may determine that one cell contains a certain number or that a group of cells
+must between them contain a set of numbers since if n digits may only appear with n cells than those cells MUST
+contain those n cells and no others.
+
+
+When it comes to which rules to use and when to create an efficient solving algorithm,
+the first rule and the third rule where the placement of a digit can be narrowed down to just one tile are all that
+is needed for simple sudokus but harder ones will require rule 2 and more complicated use of rule 3.
+
+Rule one should probably be applied whenever and however a new digit is added. i.e. every
+cell in the row box or column are now known not to contain the digit that was just added.
+ (The row/box/column needn't be updated when the new digit completes it)
+
+The algorithm should start by applying rule 1 using every single given digit. As it does this it should resolve any
+digits it can and then apply rule one to those digits too. (This could I guess be done with a recursive function
+as the loop logic might get quite complicated to keep track of which digits rule one has been applied to).
+
+Once applying rule one cannot resolve any more digits, rule 3 should be used. This will likely be slower than
+rule one but will often be necessary.
+
+Rule 2 could be applied in several places but the key will likely be in balancing the CPU time of evaluating rule
+three in a box, row or column with its likelyhood of being useful. For example the box, row and column could be
+tested to check if rule 2 applies every time the number of possibilities for a tile reduced but this could be
+very inefficient as this would be several times for every successful applacation of rule 1 or 3 and is probably the
+least likely of the three rules mentioned to result in progress whilst not similarly complex to rule 3.
+
+Whilst the above summary makes this algorithm seem suprisingly simple, applying rule 2 and especially rule 3
+will likely be slightly complex on their own. Partially because a balance may need to be made between completely
+evaluating the rules and being efficient.
+
+This was all done late at night in not a lot of time, so I have not in any way proven that use of these three rules is
+sufficient for solving a sudoku with one unique solution but I do hope they are. Perhaps even part of one of the
+rules or even a whole rule is unneccessary but most of these rules are probably required.
